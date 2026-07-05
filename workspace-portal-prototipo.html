@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workspace by Prevencionista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#161b22;
+    --panel2:#1c2330;
+    --border:#2d3644;
+    --text:#e6edf3;
+    --muted:#8b949e;
+    --cyan:#00e5ff;
+    --green:#3fb950;
+    --militar:#6b7f3f;
+    --orange:#f0883e;
+    --red:#f85149;
+    --yellow:#d29922;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    background-image:
+      linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px);
+    background-size:42px 42px;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  /* ============ TELA DE LOGIN ============ */
+  #tela-login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .login-card{
+    width:100%;
+    max-width:420px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:40px 32px;
+    box-shadow:0 0 60px rgba(0,229,255,.08);
+  }
+  .logo-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.14em;
+    color:var(--militar);
+    border:1px solid var(--militar);
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .logo-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.4}}
+  h1{
+    font-family:'JetBrains Mono',monospace;
+    font-size:26px;
+    font-weight:800;
+    line-height:1.2;
+    margin-bottom:4px;
+  }
+  h1 .by{color:var(--cyan);text-shadow:0 0 14px rgba(0,229,255,.55)}
+  .sub{color:var(--muted);font-size:13.5px;margin-bottom:30px}
+
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.04em}
+  input[type=email],input[type=password]{
+    width:100%;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    color:var(--text);
+    font-size:15px;
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:16px;
+    outline:none;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.15)}
+
+  .btn-entrar{
+    width:100%;
+    background:var(--cyan);
+    color:#04252a;
+    border:none;
+    border-radius:10px;
+    padding:13px;
+    font-size:15px;
+    font-weight:700;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.03em;
+    cursor:pointer;
+    transition:box-shadow .15s, transform .1s;
+  }
+  .btn-entrar:hover{box-shadow:0 0 24px rgba(0,229,255,.5)}
+  .btn-entrar:active{transform:scale(.98)}
+  .btn-entrar:focus-visible, .card:focus-visible, .plano-opt:focus-visible, .btn-sair:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+  .demo-box{
+    margin-top:26px;
+    border-top:1px dashed var(--border);
+    padding-top:20px;
+  }
+  .demo-box p{font-size:12px;color:var(--muted);margin-bottom:10px}
+  .demo-box p b{color:var(--yellow)}
+  .planos-demo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .plano-opt{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:9px 6px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--muted);
+    cursor:pointer;
+    text-align:center;
+    transition:all .15s;
+  }
+  .plano-opt:hover{border-color:var(--cyan);color:var(--text)}
+  .plano-opt.sel{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.07);box-shadow:0 0 12px rgba(0,229,255,.15)}
+
+  /* ============ HUB ============ */
+  #hub{display:none;min-height:100vh}
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 28px;
+    border-bottom:1px solid var(--border);
+    background:rgba(22,27,34,.85);
+    backdrop-filter:blur(6px);
+    position:sticky;top:0;z-index:10;
+    flex-wrap:wrap;
+  }
+  .brand{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:16px}
+  .brand span{color:var(--cyan)}
+  .user-area{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .plan-chip{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;letter-spacing:.1em;
+    padding:5px 12px;border-radius:999px;
+    border:1px solid var(--green);
+    color:var(--green);
+    box-shadow:0 0 10px rgba(63,185,80,.25);
+  }
+  .user-email{font-size:13px;color:var(--muted)}
+  .btn-sair{
+    background:transparent;border:1px solid var(--border);color:var(--muted);
+    border-radius:8px;padding:7px 14px;font-size:12.5px;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;transition:all .15s;
+  }
+  .btn-sair:hover{border-color:var(--red);color:var(--red)}
+
+  main{max-width:1180px;margin:0 auto;padding:34px 28px 70px}
+  .ola{font-size:22px;font-weight:700;margin-bottom:4px}
+  .ola-sub{color:var(--muted);font-size:14px;margin-bottom:34px}
+  .ola-sub b{color:var(--cyan);font-weight:600}
+
+  .secao{margin-bottom:38px}
+  .secao-titulo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:700;letter-spacing:.16em;
+    color:var(--muted);margin-bottom:16px;
+  }
+  .secao-titulo::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    cursor:pointer;
+    transition:transform .15s, border-color .15s, box-shadow .15s;
+    position:relative;
+    overflow:hidden;
+  }
+  .card:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 6px 24px rgba(0,229,255,.18)}
+  .card .icone{font-size:30px;margin-bottom:12px;display:block}
+  .card h3{font-size:15.5px;font-weight:600;margin-bottom:5px}
+  .card p{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .card .abrir{
+    margin-top:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;font-weight:700;color:var(--cyan);
+    letter-spacing:.06em;
+  }
+  .card.bloq{cursor:pointer}
+  .card.bloq:hover{border-color:var(--yellow);box-shadow:0 6px 24px rgba(210,153,34,.15)}
+  .card.bloq .icone,.card.bloq h3,.card.bloq p{opacity:.35;filter:grayscale(.6)}
+  .card .cadeado{
+    position:absolute;top:14px;right:14px;font-size:16px;
+  }
+  .card .upgrade-tag{
+    margin-top:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;color:var(--yellow);
+    letter-spacing:.04em;
+  }
+
+  /* toast */
+  #toast{
+    position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);
+    background:var(--panel2);border:1px solid var(--cyan);color:var(--text);
+    padding:13px 22px;border-radius:12px;font-size:13.5px;
+    box-shadow:0 0 30px rgba(0,229,255,.3);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.2);
+    z-index:99;max-width:90vw;text-align:center;
+  }
+  #toast.show{transform:translateX(-50%) translateY(0)}
+  #toast b{color:var(--cyan)}
+  #toast.warn{border-color:var(--yellow);box-shadow:0 0 30px rgba(210,153,34,.3)}
+  #toast.warn b{color:var(--yellow)}
+
+  .rodape-nota{
+    margin-top:20px;text-align:center;color:var(--muted);font-size:12px;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+  }
+  @media (max-width:560px){
+    header{padding:14px 16px}
+    main{padding:24px 16px 60px}
+    .user-email{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTARIA (LOGIN) ============ -->
+<div id="tela-login">
+  <div class="login-card">
+    <div class="logo-badge"><span class="dot"></span>SISTEMA ONLINE</div>
+    <h1>Workspace <span class="by">by Prevencionista</span></h1>
+    <p class="sub">Ferramentas digitais para Saúde e Segurança do Trabalho</p>
+
+    <label for="email">EMAIL</label>
+    <input type="email" id="email" placeholder="seu@email.com" value="cliente@empresa.com.br">
+
+    <label for="senha">SENHA</label>
+    <input type="password" id="senha" placeholder="••••••••" value="demo1234">
+
+    <button class="btn-entrar" id="btn-entrar">ENTRAR →</button>
+
+    <div class="demo-box">
+      <p>🧪 <b>MODO PROTÓTIPO:</b> escolha o plano que quer simular. No sistema real, o plano vem do cadastro do cliente no Firebase — não é escolhido por ele.</p>
+      <div class="planos-demo" id="planos-demo">
+        <button class="plano-opt" data-plano="junior">JÚNIOR</button>
+        <button class="plano-opt" data-plano="pleno">PLENO</button>
+        <button class="plano-opt sel" data-plano="senior">SÊNIOR</button>
+        <button class="plano-opt" data-plano="especialista">ESPECIALISTA</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HUB (PORTAL) ============ -->
+<div id="hub">
+  <header>
+    <div class="brand">⛑️ Workspace <span>by Prevencionista</span></div>
+    <div class="user-area">
+      <span class="user-email mono" id="hub-email"></span>
+      <span class="plan-chip" id="hub-plano"></span>
+      <button class="btn-sair" id="btn-sair">SAIR</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="ola" id="saudacao">Bem-vindo 👷</div>
+    <div class="ola-sub">Suas ferramentas estão prontas. Dados sincronizados na nuvem — acesse do notebook, celular ou TV do CD. <b id="contagem"></b></div>
+
+    <div class="secao">
+      <div class="secao-titulo">📊 INDICADORES</div>
+      <div class="grid" id="grid-indicadores"></div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo">🗂️ GESTÃO DE CIPA &amp; BRIGADA</div>
+      <div class="grid" id="grid-gestao"></div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo">🚨 OPERACIONAL</div>
+      <div class="grid" id="grid-operacional"></div>
+    </div>
+
+    <div class="rodape-nota">workspace-prototipo v0.1 · dados de demonstração · firebase não conectado</div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ===================== CONFIGURAÇÃO DAS FERRAMENTAS =====================
+// No sistema real, cada ferramenta é um arquivo .html na mesma pasta.
+// O campo "arquivo" é o link que o card abre.
+const FERRAMENTAS = [
+  // --- Indicadores ---
+  {id:'painel',     secao:'indicadores', icone:'📈', nome:'Painel Executivo SSO',   desc:'Visão geral dos indicadores para apresentar à diretoria.',        arquivo:'painel-executivo.html',  minimo:'pleno'},
+  {id:'tftg',       secao:'indicadores', icone:'🧮', nome:'TF & TG',                desc:'Taxa de frequência e gravidade calculadas automaticamente.',       arquivo:'tf-tg.html',             minimo:'pleno'},
+  {id:'piramide',   secao:'indicadores', icone:'🔺', nome:'Pirâmide de Acidentes',  desc:'Pirâmide de Bird com mapa de calor por área e por mês.',           arquivo:'piramide.html',          minimo:'pleno'},
+  {id:'mapa',       secao:'indicadores', icone:'🗺️', nome:'Mapa de Riscos',         desc:'Mapa de riscos interativo por setor da planta.',                   arquivo:'mapa-riscos.html',       minimo:'pleno'},
+  // --- Gestão CIPA & Brigada ---
+  {id:'crono-cipa', secao:'gestao',      icone:'📅', nome:'Cronograma CIPA',        desc:'Reuniões, inspeções e ações da CIPA no ano.',                      arquivo:'cronograma-cipa.html',   minimo:'senior'},
+  {id:'crono-brig', secao:'gestao',      icone:'🧯', nome:'Cronograma Brigada',     desc:'Treinamentos e simulados da Brigada de Emergência.',               arquivo:'cronograma-brigada.html',minimo:'senior'},
+  {id:'cipa-pres',  secao:'gestao',      icone:'✅', nome:'CIPA Presente',          desc:'Controle de presença dos cipeiros nas reuniões.',                  arquivo:'cipa-presente.html',     minimo:'senior'},
+  {id:'painel-cipa',secao:'gestao',      icone:'🖥️', nome:'Painel CIPA Presente',   desc:'Painel de acompanhamento de participação da CIPA.',                arquivo:'painel-cipa.html',       minimo:'senior'},
+  {id:'organograma',secao:'gestao',      icone:'🌳', nome:'Organograma CIPA',       desc:'Estrutura da CIPA com titulares e suplentes.',                     arquivo:'organograma.html',       minimo:'senior'},
+  // --- Operacional ---
+  {id:'alerta',     secao:'operacional', icone:'🚨', nome:'Alerta 360',             desc:'Comunicação rápida de emergências via WhatsApp.',                  arquivo:'alerta-360.html',        minimo:'senior'},
+  {id:'portal',     secao:'operacional', icone:'🏠', nome:'Portal SSO',             desc:'Portal do colaborador: documentos, ações e comunicados.',          arquivo:'portal-sso.html',        minimo:'senior'},
+  {id:'inspe',      secao:'operacional', icone:'🏗️', nome:'Inspe — Porta-Paletes',  desc:'Inspeção de estruturas de armazenagem (NR-11 / NBR 15524).',       arquivo:'inspe-paletes.html',     minimo:'especialista'},
+];
+
+// Hierarquia dos planos (quanto maior, mais acesso)
+const NIVEL = {junior:1, pleno:2, senior:3, especialista:4};
+const NOME_PLANO = {junior:'PLANO JÚNIOR', pleno:'PLANO PLENO', senior:'PLANO SÊNIOR', especialista:'PLANO ESPECIALISTA'};
+const PROXIMO = {pleno:'Pleno', senior:'Sênior', especialista:'Especialista'};
+
+// No plano Júnior o cliente escolhe 1 ferramenta. Na demo, ele "escolheu" a Pirâmide:
+const ESCOLHA_JUNIOR = 'piramide';
+
+let planoAtual = 'senior';
+
+// ===================== LOGIN (simulado) =====================
+document.querySelectorAll('.plano-opt').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.plano-opt').forEach(b=>b.classList.remove('sel'));
+    btn.classList.add('sel');
+    planoAtual = btn.dataset.plano;
+  });
+});
+
+document.getElementById('btn-entrar').addEventListener('click',entrar);
+document.getElementById('senha').addEventListener('keydown',e=>{if(e.key==='Enter')entrar();});
+
+function entrar(){
+  const email = document.getElementById('email').value.trim() || 'cliente@empresa.com.br';
+  // >>> No sistema real, aqui entra: signInWithEmailAndPassword(auth, email, senha)
+  // >>> e o plano vem de: clientes/{uid}/perfil.plano
+  document.getElementById('tela-login').style.display='none';
+  document.getElementById('hub').style.display='block';
+  document.getElementById('hub-email').textContent = email;
+  document.getElementById('hub-plano').textContent = NOME_PLANO[planoAtual];
+  document.getElementById('saudacao').textContent = 'Bem-vindo, ' + email.split('@')[0] + ' 👷';
+  montarCards();
+}
+
+document.getElementById('btn-sair').addEventListener('click',()=>{
+  // >>> No sistema real: signOut(auth)
+  document.getElementById('hub').style.display='none';
+  document.getElementById('tela-login').style.display='flex';
+});
+
+// ===================== MONTAGEM DOS CARDS =====================
+function temAcesso(f){
+  if(planoAtual==='junior') return f.id===ESCOLHA_JUNIOR;
+  return NIVEL[planoAtual] >= NIVEL[f.minimo];
+}
+
+function montarCards(){
+  const grids = {
+    indicadores: document.getElementById('grid-indicadores'),
+    gestao: document.getElementById('grid-gestao'),
+    operacional: document.getElementById('grid-operacional'),
+  };
+  Object.values(grids).forEach(g=>g.innerHTML='');
+
+  let liberadas = 0;
+  FERRAMENTAS.forEach(f=>{
+    const ok = temAcesso(f);
+    if(ok) liberadas++;
+    const card = document.createElement('div');
+    card.className = 'card' + (ok ? '' : ' bloq');
+    card.tabIndex = 0;
+    card.innerHTML = ok
+      ? `<span class="icone">${f.icone}</span>
+         <h3>${f.nome}</h3>
+         <p>${f.desc}</p>
+         <div class="abrir">ABRIR →</div>`
+      : `<span class="cadeado">🔒</span>
+         <span class="icone">${f.icone}</span>
+         <h3>${f.nome}</h3>
+         <p>${f.desc}</p>
+         <div class="upgrade-tag">⬆ DISPONÍVEL NO PLANO ${f.minimo==='especialista'?'ESPECIALISTA':(f.minimo==='senior'?'SÊNIOR':'PLENO')}</div>`;
+    card.addEventListener('click',()=>clicou(f,ok));
+    card.addEventListener('keydown',e=>{if(e.key==='Enter')clicou(f,ok);});
+    grids[f.secao].appendChild(card);
+  });
+
+  document.getElementById('contagem').textContent =
+    liberadas + ' de ' + FERRAMENTAS.length + ' ferramentas liberadas no seu plano.';
+}
+
+// ===================== CLIQUE NO CARD =====================
+function clicou(f, ok){
+  if(ok){
+    // >>> No sistema real: window.location.href = f.arquivo;
+    toast(`No sistema real, abriria <b>${f.arquivo}</b> — com os dados da gaveta deste cliente.`);
+  } else {
+    toast(`🔒 Ferramenta do <b>Plano ${PROXIMO[f.minimo]}</b>. No sistema real, aqui entra o botão de upgrade.`, true);
+  }
+}
+
+let toastTimer;
+function toast(html, warn){
+  const t = document.getElementById('toast');
+  t.innerHTML = html;
+  t.className = warn ? 'warn show' : 'show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3400);
+}
+</script>
+</body>
+</html>
